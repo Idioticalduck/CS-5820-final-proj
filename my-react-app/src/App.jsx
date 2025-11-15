@@ -1,53 +1,26 @@
 import { useEffect,useRef,useState } from 'react'
 import {io} from 'socket.io-client'
-import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/solid';
+import { useNavigate } from 'react-router-dom'
 
 function App() {
-  const [sender,setSender]=useState("")
-  const [subject,setSubject]=useState("")
-  const [body,setBody]=useState("")
 
-  const [detail,setDetails]=useState({})
+
   const [blacklisted,setBlacklisted]=useState([])
   const [safe,setSafe]=useState([])
-  const domainIndicators = [
-  ".com", ".org", ".net", ".info", ".biz", ".gov", ".edu", ".mil",
-  ".io", ".co", ".xyz", ".me", ".dev", ".app", ".ly", ".gl", ".gg",
-  ".id", ".sg", ".my", ".th", ".vn", ".ph", ".hk", ".kr", ".jp", ".cn",
-  ".in", ".ae", ".qa", ".sa", ".il", ".tr", ".ru", ".ua", ".by", ".pl",
-  ".de", ".fr", ".es", ".it", ".uk", ".ie", ".nl", ".se", ".no", ".fi",
-  ".dk", ".is", ".ch", ".at", ".be", ".cz", ".sk", ".hu", ".ro", ".bg",
-  ".gr", ".pt", ".lt", ".lv", ".ee", ".hr", ".rs", ".si", ".ba", ".me",
-  ".us", ".ca", ".mx", ".br", ".ar", ".cl", ".co", ".ve", ".pe", ".uy",
-  ".za", ".ng", ".ke", ".eg", ".gh", ".tz", ".ma", ".dz", ".tn",
-  ".tv", ".fm", ".online", ".site", ".store", ".tech", ".club",
-  ".agency", ".design", ".news", ".blog", ".mobi", ".shop", ".email",
-  ".link", ".space", ".life", ".today", ".games", ".video", ".photos",
-  ".media", ".website", ".software", ".cloud", ".solutions", ".systems",
-  ".services", ".community", ".network", ".center", ".digital",
-  ".studio", ".finance", ".law", ".lawyer", ".legal", ".art", ".music",
-  ".band", ".live", ".show", ".movie", ".film", ".press", ".beauty",
-  ".health", ".care", ".clinic", ".doctor", ".bank", ".money", ".crypto",
-  ".capital", ".fund", ".loan", ".investments", ".energy", ".green",
-  ".eco", ".travel", ".hotel", ".vacations", ".restaurant", ".shop",
-  ".fashion", ".fit", ".yoga", ".games", ".casino", ".bet", ".tv",
-  ".global", ".world", ".company", ".business", ".international"
-];
   const socketRef=useRef(null)
+  const navigation=useNavigate()
    useEffect(() => {
     // connect to Node server
     socketRef.current= io("http://localhost:3000");
 
     // listen for messages from server
-    socketRef.current.on("py_to_js", (data) => {
   
-      setDetails(data)
-    });
     socketRef.current.on("safemail",(data)=>{
       console.log(data)
       setSafe(data)
     })
     socketRef.current.on("blacklisted",(data)=>{
+      console.log(data)
       setBlacklisted(data)
     })
     // optional: cleanup on unmount
@@ -55,42 +28,14 @@ function App() {
       socketRef.current.disconnect();
     };
   }, [])
-  const countURLS=()=>{
-    const words = body.split(/\s+/); // split by whitespace
-  const links = new Set();
 
-  words.forEach(word => {
-    domainIndicators.forEach(domain => {
-      if (word.includes(domain)) {
-        links.add(word);
-      }
-    });
-  });
 
-  return links.size ;
-  }
-
-  useEffect(()=>{
-    console.log("details:",detail)
-  },[detail])
 
   const [editing,setEditing]=useState()
   const [tempnewmail,setTempnewmail]=useState()
-  const submit=()=>{
-    const urls=countURLS()
-    const email={
-      "sender":[sender],
-      "subject":[subject],
-      "body":[body],
-      "urls":[urls]
-    }
-    console.log(email)
-    socketRef.current.emit("js_to_py",JSON.stringify(email))
-
-    return 1
-  }
   const delete_email=(type,email)=>{
-    if(type=="safe"){
+    if(confirm("Are you sure you wish to delete? This cannot be undone."))
+{    if(type=="safe"){
       socketRef.current.emit("editsafe",{
       'old':email,
       'new':''
@@ -100,7 +45,7 @@ function App() {
       'old':email,
       'new':''
       })
-    }
+    }}
   }
     const checkEmail = async (mail) => {
 
@@ -141,12 +86,14 @@ function App() {
       })
       
     }else{
+      console.log('addblacklist')
       socketRef.current.emit("addbl",{
       'email':newmail
       })
     }
     
     }
+    setTempnewmail('')
     setAdding_newbl(false)
     setAdding_newsafe(false)
    
@@ -154,52 +101,82 @@ function App() {
   useEffect(()=>{
     setTempnewmail(editing)
   },[editing])
-  const[showsafe,setShowsafe]=useState(false)
-  const[showblacklisted,setShowblacklisted]=useState(false)
+
   return (
-    <>
     <div>
-      <div>
-    <div className='bg-green-500'>
-      <h1 className="text-white text-4xl">Whitelisted </h1>
-      <button onClick={()=>setShowsafe(prev=>(!prev))}>{showsafe ? (
-        <ChevronUpIcon className="w-4 h-4 ml-2" />
-      ) : (
-        <ChevronDownIcon className="w-4 h-4 ml-2" />
-      )}</button>
+      <div onClick={()=>navigation('/') } className='text-4xl text-amber-50 bg-pink-950 p-4'>Return to Inboxes</div>
+    <div className="fixed left-0 w-full h-screen flex">
+      <div className='flex-1'>
+    <div className='bg-green-500 '>
+      <h1 className="text-white text-4xl p-4">Whitelisted </h1>
       </div>
-      {(safe.length!=0&&showsafe)?
+      {(safe.length!=0)?
       <div>
     <ul>
         {safe.map(mail=>(
-          <li id={mail} key={mail}>
-            {editing!=mail? mail:
-            
-            <input type='text' value={tempnewmail} key={mail}  onChange={(e) => setTempnewmail(e.target.value)}
+           <li id={mail} key={mail}
+          className={`border-2 border-gray-500 px-4 py-2 hover:bg-gray-500 hover:text-amber-50 cursor-pointer ${ editing==mail?'bg-gray-500 text-amber-50':''}`}>
+            {editing!=mail? <>{mail}
+            <button onClick={()=>{setEditing(mail)
+              setAdding_newbl(false)
+              setAdding_newsafe(false)
+            }}> <svg className=" w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+    <path d="M3 17.25V21h3.75l11.02-11.02-3.75-3.75L3 17.25zM20.71 7.04a1.003 1.003 0 0 0 0-1.41L18.37 3.29a1.003 1.003 0 0 0-1.41 0l-2.34 2.34 3.75 3.75 2.34-2.34z" fill="currentColor"/>
+  </svg></button>
+            </>:
+            <>
+            <input type='text'
+            className='bg-amber-50 text-black'
+            value={tempnewmail} key={mail}  onChange={(e) => setTempnewmail(e.target.value)}
   onKeyDown={(e) => {
     if (e.key === "Enter") {
       handleEnter(mail, tempnewmail,"safe");
     }
-  }}/>}
-            <button onClick={()=>setEditing(mail)}>edit</button>
-            <button onClick={()=>delete_email("safe",mail)}>delete</button></li>
+  }}/>
+  <button class="p-2 rounded"
+  onClick={()=>setEditing('')}
+  >
+  <svg class="w-6 h-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <line x1="18" y1="6" x2="6" y2="18"></line>
+    <line x1="6" y1="6" x2="18" y2="18"></line>
+  </svg>
+</button>
+
+  </>}
+            
+  <button onClick={()=>delete_email("safe",mail)}>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
+<path d="M3 6h18v2H3V6zm2 3h14l-1.5 12h-11L5 9zm3-7h8v2H8V2z"/>
+  </svg>
+              </button></li>
         ))}
         {adding_newsafe?
-        <li>
-              <input type='text' value={tempnewmail} onChange={(e) => setTempnewmail(e.target.value)}
+        <li
+                  className={`border-2 border-gray-500 px-4 py-2 hover:bg-gray-500 hover:text-amber-50 cursor-pointer ${ adding_newsafe?'bg-gray-500 text-amber-50':''}`}
+>
+              <input type='text'className='bg-amber-50 text-black' value={tempnewmail} onChange={(e) => setTempnewmail(e.target.value)}
   onKeyDown={(e) => {
     if (e.key === "Enter") {
       handleEnter2(tempnewmail,"safe");
     }
   }}/>
+    <button class="p-2 rounded"
+  onClick={()=>setAdding_newsafe(false)}
+  >
+  <svg class="w-6 h-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <line x1="18" y1="6" x2="6" y2="18"></line>
+    <line x1="6" y1="6" x2="18" y2="18"></line>
+  </svg>
+</button>
 
         </li>
         :
         
-        <li>
-          <button onClick={()=>{
+        <li className='border-2 border-gray-500 px-4 py-2'>
+          <button className='hover:bg-amber-300' onClick={()=>{
             setAdding_newsafe(true)
             setAdding_newbl(false)
+            setEditing('')
             }}>+</button>
         </li>
         }
@@ -207,46 +184,80 @@ function App() {
     </div>
 :<></>}
 </div>
-<div>
-<div className='bg-red-800'><h1 className='text-shadow-neutral-800 text-4xl'>Blacklisted</h1>
-      <button onClick={()=>setShowblacklisted(prev=>(!prev))}>{showblacklisted ? (
-        <ChevronUpIcon className="w-4 h-4 ml-2" />
-      ) : (
-        <ChevronDownIcon className="w-4 h-4 ml-2" />
-      )}</button>
+<div className='flex-1'> 
+<div className='bg-red-800'><h1 className='p-4 text-amber-50 text-4xl'>Blacklisted</h1>
+
 </div>
-{(blacklisted.length!=0 &&showblacklisted)?
+{(blacklisted.length!=0 )?
     <div>
       <ul>
         {blacklisted.map(mail=>(
-          <li id={mail} key={mail}>
-            {editing!=mail? mail:
-            
-            <input type='text' value={tempnewmail} key={mail}  onChange={(e) => setTempnewmail(e.target.value)}
+          <li id={mail} key={mail}
+          className={`border-2 border-gray-500 px-4 py-2 hover:bg-gray-500 hover:text-amber-50 cursor-pointer ${ editing==mail?'bg-gray-500 text-amber-50':''}`}>
+            {editing!=mail? <>{mail}
+            <button onClick={()=>{setEditing(mail)
+              setAdding_newbl(false)
+              setAdding_newsafe(false)
+            }}> <svg class=" w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+    <path d="M3 17.25V21h3.75l11.02-11.02-3.75-3.75L3 17.25zM20.71 7.04a1.003 1.003 0 0 0 0-1.41L18.37 3.29a1.003 1.003 0 0 0-1.41 0l-2.34 2.34 3.75 3.75 2.34-2.34z" fill="currentColor"/>
+  </svg></button>
+            </>:
+            <>
+            <input type='text'
+            className='bg-amber-50 text-black'
+            value={tempnewmail} key={mail}  onChange={(e) => setTempnewmail(e.target.value)}
   onKeyDown={(e) => {
     if (e.key === "Enter") {
       handleEnter(mail, tempnewmail,"blacklisted");
     }
-  }}/>}
-            <button onClick={()=>setEditing(mail)}>edit</button>
-            <button onClick={()=>delete_email("blacklisted",mail)}>delete</button></li>
+  }}/>
+  <button class="p-2 rounded"
+  onClick={()=>{setEditing('')
+    setAdding_newbl(false)
+    setAdding_newsafe(false)
+  }
+  }
+  >
+  <svg className="w-6 h-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <line x1="18" y1="6" x2="6" y2="18"></line>
+    <line x1="6" y1="6" x2="18" y2="18"></line>
+  </svg>
+</button>
+
+  </>}
+            
+            <button onClick={()=>delete_email("blacklisted",mail)}>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
+<path d="M3 6h18v2H3V6zm2 3h14l-1.5 12h-11L5 9zm3-7h8v2H8V2z"/>
+  </svg>
+              </button></li>
         ))}
          {adding_newbl?
-        <li>
-              <input type='text' value={tempnewmail} onChange={(e) => setTempnewmail(e.target.value)}
+        <li
+                  className={`border-2 border-gray-500 px-4 py-2 hover:bg-gray-500 hover:text-amber-50 cursor-pointer ${ adding_newbl?'bg-gray-500 text-amber-50':''}`}>
+              <input type='text'className='bg-amber-50 text-black' value={tempnewmail} onChange={(e) => setTempnewmail(e.target.value)}
   onKeyDown={(e) => {
     if (e.key === "Enter") {
-      handleEnter2(tempnewmail,"safe");
+      handleEnter2(tempnewmail,"blacklisted");
     }
   }}/>
+    <button class="p-2 rounded"
+  onClick={()=>setAdding_newbl(false)}
+  >
+  <svg class="w-6 h-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <line x1="18" y1="6" x2="6" y2="18"></line>
+    <line x1="6" y1="6" x2="18" y2="18"></line>
+  </svg>
+</button>
 
         </li>
         :
         
-        <li>
-          <button onClick={()=>{
+        <li className='border-2 border-gray-500 px-4 py-2'>
+          <button className='hover:bg-amber-300' onClick={()=>{
             setAdding_newsafe(false)
             setAdding_newbl(true)
+            setEditing('')
             }}>+</button>
         </li>
         }
@@ -255,49 +266,11 @@ function App() {
     </div>
 :<></>}
 </div>
-    <div>
-    <label>
-      Sender Details
-      <input type='text' placeholder='Format: Sender name <senderemail@senderdomain.com>' onChange={(e)=>setSender(e.target.value)}></input>
-    </label>
-    </div>
-    <div>
-        <label>
-    Subject
-    <input type='text' placeholder="Subject" onChange={(e)=>setSubject(e.target.value)}></input>
-    </label>
-    </div>
-    <div>
- <label>
-      Body
-      <input type='textarea' placeholder="Input email body" onChange={(e)=>setBody(e.target.value)}></input>
-    </label>
-    </div>
-    <div>
-       <button onClick={()=>submit()} >Submit Details</button>
-    </div>
+
     
     </div>
-    {Object.keys(detail).length!=0?
-
-    <div>
-      <h1>
-      Likelihood of spam: {detail['spam?']*100}%
-      </h1>
-      {detail['safemail']?
-      <>
-      <p>Reasoning: email listed among safe emails</p>
-      </>
-    :detail['blmail'] ?
-    <>
-    <p>Reasoning:email listed among blacklisted emails</p>
-    </>
-    :<>
-    </>
-    } 
  
-    </div>:<></>}
-    </>
+    </div>
 
   )
 }
