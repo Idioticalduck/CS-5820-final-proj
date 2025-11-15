@@ -1,6 +1,6 @@
 import { useEffect,useRef,useState } from 'react'
 import {io} from 'socket.io-client'
-
+import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/solid';
 
 function App() {
   const [sender,setSender]=useState("")
@@ -75,7 +75,6 @@ function App() {
   },[detail])
 
   const [editing,setEditing]=useState()
-  const [prevemail,setPrevmail]=useState()
   const [tempnewmail,setTempnewmail]=useState()
   const submit=()=>{
     const urls=countURLS()
@@ -128,15 +127,49 @@ function App() {
     }
     setEditing('')
   }
+  const [adding_newsafe,setAdding_newsafe]=useState(false)
+  const [adding_newbl,setAdding_newbl]=useState(false)
+  const handleEnter2=async(newmail,type) =>{
+    console.log(newmail)
+    const check=await checkEmail(newmail)
+    if(check){
+      console.log(';1')
+      if(type=="safe"){
+      socketRef.current.emit("addsafe",{
+      
+      'email':newmail
+      })
+      
+    }else{
+      socketRef.current.emit("addbl",{
+      'email':newmail
+      })
+    }
+    
+    }
+    setAdding_newbl(false)
+    setAdding_newsafe(false)
+   
+  }
   useEffect(()=>{
     setTempnewmail(editing)
   },[editing])
-
+  const[showsafe,setShowsafe]=useState(false)
+  const[showblacklisted,setShowblacklisted]=useState(false)
   return (
     <>
     <div>
-      <h1>Whitelisted </h1>
-      {safe.length!=0?
+      <div>
+    <div className='bg-green-500'>
+      <h1 className="text-white text-4xl">Whitelisted </h1>
+      <button onClick={()=>setShowsafe(prev=>(!prev))}>{showsafe ? (
+        <ChevronUpIcon className="w-4 h-4 ml-2" />
+      ) : (
+        <ChevronDownIcon className="w-4 h-4 ml-2" />
+      )}</button>
+      </div>
+      {(safe.length!=0&&showsafe)?
+      <div>
     <ul>
         {safe.map(mail=>(
           <li id={mail} key={mail}>
@@ -151,15 +184,40 @@ function App() {
             <button onClick={()=>setEditing(mail)}>edit</button>
             <button onClick={()=>delete_email("safe",mail)}>delete</button></li>
         ))}
-
+        {adding_newsafe?
         <li>
-          <button>+</button>
+              <input type='text' value={tempnewmail} onChange={(e) => setTempnewmail(e.target.value)}
+  onKeyDown={(e) => {
+    if (e.key === "Enter") {
+      handleEnter2(tempnewmail,"safe");
+    }
+  }}/>
+
         </li>
+        :
+        
+        <li>
+          <button onClick={()=>{
+            setAdding_newsafe(true)
+            setAdding_newbl(false)
+            }}>+</button>
+        </li>
+        }
     </ul>
+    </div>
 :<></>}
-<h1>Blacklisted</h1>
-{blacklisted.length!=0?
-    <ul>
+</div>
+<div>
+<div className='bg-red-800'><h1 className='text-shadow-neutral-800 text-4xl'>Blacklisted</h1>
+      <button onClick={()=>setShowblacklisted(prev=>(!prev))}>{showblacklisted ? (
+        <ChevronUpIcon className="w-4 h-4 ml-2" />
+      ) : (
+        <ChevronDownIcon className="w-4 h-4 ml-2" />
+      )}</button>
+</div>
+{(blacklisted.length!=0 &&showblacklisted)?
+    <div>
+      <ul>
         {blacklisted.map(mail=>(
           <li id={mail} key={mail}>
             {editing!=mail? mail:
@@ -173,8 +231,30 @@ function App() {
             <button onClick={()=>setEditing(mail)}>edit</button>
             <button onClick={()=>delete_email("blacklisted",mail)}>delete</button></li>
         ))}
+         {adding_newbl?
+        <li>
+              <input type='text' value={tempnewmail} onChange={(e) => setTempnewmail(e.target.value)}
+  onKeyDown={(e) => {
+    if (e.key === "Enter") {
+      handleEnter2(tempnewmail,"safe");
+    }
+  }}/>
+
+        </li>
+        :
+        
+        <li>
+          <button onClick={()=>{
+            setAdding_newsafe(false)
+            setAdding_newbl(true)
+            }}>+</button>
+        </li>
+        }
     </ul>
+
+    </div>
 :<></>}
+</div>
     <div>
     <label>
       Sender Details
@@ -202,7 +282,7 @@ function App() {
 
     <div>
       <h1>
-      Likelihood of spam: {detail['scam?']*100}%
+      Likelihood of spam: {detail['spam?']*100}%
       </h1>
       {detail['safemail']?
       <>
