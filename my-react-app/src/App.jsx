@@ -1,4 +1,4 @@
-import { useEffect,useRef,useState } from 'react'
+import {React, useEffect,useRef,useState } from 'react'
 import {io} from 'socket.io-client'
 import { useNavigate } from 'react-router-dom'
 
@@ -133,10 +133,10 @@ function App() {
       handleEnter(mail, tempnewmail,"safe");
     }
   }}/>
-  <button class="p-2 rounded"
+  <button className="p-2 rounded"
   onClick={()=>setEditing('')}
   >
-  <svg class="w-6 h-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  <svg className="w-6 h-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <line x1="18" y1="6" x2="6" y2="18"></line>
     <line x1="6" y1="6" x2="18" y2="18"></line>
   </svg>
@@ -160,10 +160,10 @@ function App() {
       handleEnter2(tempnewmail,"safe");
     }
   }}/>
-    <button class="p-2 rounded"
+    <button className="p-2 rounded"
   onClick={()=>setAdding_newsafe(false)}
   >
-  <svg class="w-6 h-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  <svg className="w-6 h-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <line x1="18" y1="6" x2="6" y2="18"></line>
     <line x1="6" y1="6" x2="18" y2="18"></line>
   </svg>
@@ -198,7 +198,7 @@ function App() {
             <button onClick={()=>{setEditing(mail)
               setAdding_newbl(false)
               setAdding_newsafe(false)
-            }}> <svg class=" w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+            }}> <svg className=" w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
     <path d="M3 17.25V21h3.75l11.02-11.02-3.75-3.75L3 17.25zM20.71 7.04a1.003 1.003 0 0 0 0-1.41L18.37 3.29a1.003 1.003 0 0 0-1.41 0l-2.34 2.34 3.75 3.75 2.34-2.34z" fill="currentColor"/>
   </svg></button>
             </>:
@@ -211,7 +211,7 @@ function App() {
       handleEnter(mail, tempnewmail,"blacklisted");
     }
   }}/>
-  <button class="p-2 rounded"
+  <button className="p-2 rounded"
   onClick={()=>{setEditing('')
     setAdding_newbl(false)
     setAdding_newsafe(false)
@@ -227,7 +227,7 @@ function App() {
   </>}
             
             <button onClick={()=>delete_email("blacklisted",mail)}>
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
 <path d="M3 6h18v2H3V6zm2 3h14l-1.5 12h-11L5 9zm3-7h8v2H8V2z"/>
   </svg>
               </button></li>
@@ -241,10 +241,10 @@ function App() {
       handleEnter2(tempnewmail,"blacklisted");
     }
   }}/>
-    <button class="p-2 rounded"
+    <button className="p-2 rounded"
   onClick={()=>setAdding_newbl(false)}
   >
-  <svg class="w-6 h-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  <svg className="w-6 h-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <line x1="18" y1="6" x2="6" y2="18"></line>
     <line x1="6" y1="6" x2="18" y2="18"></line>
   </svg>
