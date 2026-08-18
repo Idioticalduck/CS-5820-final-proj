@@ -14,7 +14,7 @@ function App() {
 
   const [editing,setEditing]=useState()
   const [tempnewmail,setTempnewmail]=useState()
-[toyota___,,,,,,,,,]
+
 
 
   const postChanges=(newacc)=>{
