@@ -1,0 +1,130 @@
+[{
+  "_id": {
+    "$oid": "6918d8d1821277c1d32e57dd"
+  },
+  "sender": "James Harden <hardenjames@yahoo.com>",
+  "subject": "Followup interview details",
+  "body": "Hi!, we have reviewed your resume and compiled results from our last interview and decided we would like to move forward in the hiring process. \n We have a timeslot open on Tuesday at 11AM, if you is not available at this time please reach out so we can fins a solution",
+  "date": "2025-11-03T10:15:00Z",
+  "recipient": "ling.zhou@techspire.io"
+},
+{
+  "_id": {
+    "$oid": "6918d8d1821277c1d32e57de"
+  },
+  "sender": "Microsoft Support <support@microsoft.com>",
+  "subject": "Password Reset",
+  "body": "Your password reset code is 58423 please enter it in the browser to change email or go to microsoft.com to directly change the pasword",
+  "date": "2025-11-01T09:02:00Z",
+  "recipient": "Bjeff23@gmail.com"
+},
+{
+  "_id": {
+    "$oid": "6918d8d1821277c1d32e57df"
+  },
+  "sender": "QiMing Official <norepy@qming.com>",
+  "subject": "Claim free iPhone",
+  "body": "You have been randomly selected from a raffle to win various prizes and have won an iPhone 16 Pro Max! Go to clearly_a_scam.com to see how to claim",
+  "date": "2025-11-06T12:40:00Z",
+  "recipient": "ling.zhou@techspire.io"
+},
+{
+  "_id": {
+    "$oid": "6918e16b821277c1d32e57ed"
+  },
+  "sender": "Daniel Hart <daniel.hart@gmail.com>",
+  "subject": "Shared Folder Update",
+  "body": "I added the new documents to the shared Drive folder. Let me know if anything is missing.",
+  "date": "2025-11-07T11:30:00Z",
+  "recipient": "ling.zhou@techspire.io"
+},
+{
+  "_id": {
+    "$oid": "6918e16b821277c1d32e57ef"
+  },
+  "sender": "Office Admin <office.admin@outlook.com>",
+  "subject": "Room Reservation Approved",
+  "body": "Your request to book Conference Room B for Tuesday has been approved.",
+  "date": "2025-11-09T08:55:00Z",
+  "recipient": "ling.zhou@techspire.io"
+},
+{
+  "_id": {
+    "$oid": "6918e16b821277c1d32e57f0"
+  },
+  "sender": "Prof. Lisa Chen <lchen@mit.edu>",
+  "subject": "Assignment Feedback",
+  "body": "I've posted feedback on your research proposal. Please review it before class.",
+  "date": "2025-11-08T13:14:00Z",
+  "recipient": "Bjeff23@gmail.com"
+},
+{
+  "_id": {
+    "$oid": "6918e16b821277c1d32e57f1"
+  },
+  "sender": "Michael Shaw <mshaw@stanford.edu>",
+  "subject": "Updated Lab Hours",
+  "body": "Lab hours for next week have been adjusted due to construction in the building.",
+  "date": "2025-11-10T09:48:00Z",
+  "recipient": "ling.zhou@techspire.io"
+},
+{
+  "_id": {
+    "$oid": "6918e16b821277c1d32e57f2"
+  },
+  "sender": "Nina Patel <nina.patel@berkeley.edu>",
+  "subject": "Study Group Notes",
+  "body": "Here are the notes from our study session earlier today.",
+  "date": "2025-11-11T15:22:00Z",
+  "recipient": "Bjeff23@gmail.com"
+},
+{
+  "_id": {
+    "$oid": "6918e16b821277c1d32e57f3"
+  },
+  "sender": "IT Support <itsupport@microsoft.com>",
+  "subject": "Security Advisory",
+  "body": "We recommend enabling multi-factor authentication on your account for enhanced security.",
+  "date": "2025-11-12T07:11:00Z",
+  "recipient": "ling.zhou@techspire.io"
+},
+{
+  "_id": {
+    "$oid": "6918e16b821277c1d32e57f4"
+  },
+  "sender": "Customer Service <support@apple.com>",
+  "subject": "Order Confirmation",
+  "body": "Your recent purchase has been confirmed. You can track your order in your Apple account.",
+  "date": "2025-11-13T17:03:00Z",
+  "recipient": "Bjeff23@gmail.com"
+},
+{
+  "_id": {
+    "$oid": "6918e16b821277c1d32e57f5"
+  },
+  "sender": "HR Department <hr@amazon.com>",
+  "subject": "Remote Work Policy Update",
+  "body": "The remote work policy for Q3 has been updated. Please review the new guidelines.",
+  "date": "2025-11-14T10:51:00Z",
+  "recipient": "ling.zhou@techspire.io"
+},
+{
+  "_id": {
+    "$oid": "6918e16b821277c1d32e57f9"
+  },
+  "sender": "Support Team <support@adobe.com>",
+  "subject": "Subscription Renewal",
+  "body": "Your subscription is scheduled to renew next week. No action is required.",
+  "date": "2025-11-16T14:45:00Z",
+  "recipient": "ling.zhou@techspire.io"
+},
+{
+  "_id": {
+    "$oid": "691de2125ececb5a57e2dda4"
+  },
+  "sender": "Jeff Beckham <Bjeff23@gmail.com>",
+  "recipient": "ling.zhou@techspire.io",
+  "subject": "hello",
+  "body": "THIS AISBNODAOILBDDFAKLJBUKBJKLLBJKNADFLKNJBLBJADFKJBBJKAFKJBFABJKFAKJ",
+  "date": "2025-11-19T15:28:18.737Z"
+}]

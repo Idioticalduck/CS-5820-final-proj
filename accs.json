@@ -1,0 +1,20 @@
+[{
+  "_id": {
+    "$oid": "691c10a8454aff3ffaf9db96"
+  },
+  "name": "Jeff Beckham",
+  "email": "Bjeff23@gmail.com",
+  "password": "mank1ldo",
+  "blacklist": [],
+  "whitelist": []
+},
+{
+  "_id": {
+    "$oid": "691c422de2519c233b3da02a"
+  },
+  "name": "ling",
+  "password": "88888888",
+  "email": "ling.zhou@techspire.io",
+  "blacklist": [],
+  "whitelist": []
+}]
